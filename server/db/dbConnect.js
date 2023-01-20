@@ -3,6 +3,7 @@ require("dotenv").config();
 
 async function dbConnect() {
   mongoose
+    .set("strictQuery", false)
     .connect(process.env.DB_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
