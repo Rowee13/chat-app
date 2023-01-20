@@ -1,5 +1,9 @@
 # Chat App
 
+![Screenshot login](client/public/login.jpeg)
+
+![Screenshot - signup](client/public/signup.jpeg)
+
 ## Frontend
 
 To run the front end, run the following:
