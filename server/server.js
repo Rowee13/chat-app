@@ -6,7 +6,7 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const { Server } = require("socket.io");
 const dbConnect = require("./db/dbConnect");
-const authRouter = require("./router/auth");
+const userRouter = require("./router/userRoutes");
 
 //* database
 dbConnect();
@@ -36,7 +36,7 @@ io.on("connection", (socket) => {
 });
 
 //* endpoint
-app.use(authRouter);
+app.use("/auth", userRouter);
 
 server.listen(3001, () => {
   console.log("Server is listening on port 3001");
