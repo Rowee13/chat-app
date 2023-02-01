@@ -4,6 +4,7 @@ const http = require("http");
 const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
+const cookieParser = require("cookie-parser");
 const { Server } = require("socket.io");
 const dbConnect = require("./db/dbConnect");
 const userRouter = require("./router/userRoutes");
@@ -14,6 +15,7 @@ dbConnect();
 //* middleware
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 app.use(helmet());
 app.use(morgan("common"));
 
