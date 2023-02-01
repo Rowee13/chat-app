@@ -38,11 +38,11 @@ const signup = async (req, res, next) => {
 };
 
 const login = async (req, res, next) => {
-  const { email, password } = req.body;
+  const { username, password } = req.body;
   let existingUser;
 
   try {
-    existingUser = await User.findOne({ email });
+    existingUser = await User.findOne({ username });
   } catch (err) {
     return new Error(err);
   }

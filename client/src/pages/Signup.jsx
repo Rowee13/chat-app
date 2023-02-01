@@ -1,37 +1,44 @@
-import { useRef } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../assets/logo.png";
 
 const Signup = () => {
-  const username = useRef();
-  const firstName = useRef();
-  const lastName = useRef();
-  const email = useRef();
-  const password = useRef();
-  const confirmPassword = useRef();
+  const [signupInput, setSignupInput] = useState({
+    username: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+  });
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleFormInput = (e) => {
+    setSignupInput((prevInput) => ({
+      ...prevInput,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const sendRequest = async () => {
+    const res = await axios
+      .post("http://localhost:3001/auth/signup", {
+        username: signupInput.username,
+        firstName: signupInput.firstName,
+        lastName: signupInput.lastName,
+        email: signupInput.email,
+        password: signupInput.password,
+      })
+      .catch((err) => console.log(err));
+
+    const data = await res.data;
+    return data;
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (confirmPassword.current.value !== password.current.value) {
-      confirmPassword.current.setCustomValidity("Passwords don't match!");
-    } else {
-      const user = {
-        username: username.current.value,
-        firstName: firstName.current.value,
-        lastName: lastName.current.value,
-        email: email.current.value,
-        password: password.current.value,
-      };
-      try {
-        await axios.post("/signup", user);
-        navigate.push("/login");
-      } catch (err) {
-        console.log(err);
-      }
-    }
+    sendRequest().then(() => navigate("/"));
   };
 
   return (
@@ -48,7 +55,8 @@ const Signup = () => {
               Username<sup className="text-red-700">*</sup>
             </label>
             <input
-              ref={username}
+              name="username"
+              onChange={handleFormInput}
               required
               className="w-full py-2 px-4 rounded-md"
             />
@@ -59,7 +67,8 @@ const Signup = () => {
                 First Name<sup className="text-red-700">*</sup>
               </label>
               <input
-                ref={firstName}
+                name="firstName"
+                onChange={handleFormInput}
                 required
                 className="w-full py-2 px-4 rounded-md"
               />
@@ -69,7 +78,8 @@ const Signup = () => {
                 Last Name<sup className="text-red-700">*</sup>
               </label>
               <input
-                ref={lastName}
+                name="lastName"
+                onChange={handleFormInput}
                 required
                 className="w-full py-2 px-4 rounded-md"
               />
@@ -80,7 +90,8 @@ const Signup = () => {
               Email<sup className="text-red-700">*</sup>
             </label>
             <input
-              ref={email}
+              name="email"
+              onChange={handleFormInput}
               required
               type="email"
               className="w-full py-2 px-4 rounded-md"
@@ -91,7 +102,8 @@ const Signup = () => {
               Password<sup className="text-red-700">*</sup>
             </label>
             <input
-              ref={password}
+              name="password"
+              onChange={handleFormInput}
               required
               type="password"
               className="w-full py-2 px-4 rounded-md"
@@ -105,7 +117,7 @@ const Signup = () => {
               Confirm Password<sup className="text-red-700">*</sup>
             </label>
             <input
-              ref={confirmPassword}
+              name="confirmPassword"
               required
               type="password"
               className="w-full py-2 px-4 rounded-md"
