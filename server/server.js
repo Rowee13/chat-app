@@ -8,12 +8,11 @@ const { Server } = require("socket.io");
 const dbConnect = require("./db/dbConnect");
 const authRouter = require("./router/auth");
 
-app.use(cors());
-
 //* database
 dbConnect();
 
 //* middleware
+app.use(cors());
 app.use(express.json());
 app.use(helmet());
 app.use(morgan("common"));

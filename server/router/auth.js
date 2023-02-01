@@ -4,35 +4,38 @@ const bcrypt = require("bcrypt");
 
 //* register user
 router.post("/signup", (req, res) => {
+  const { username, firstName, lastName, email, password } = req.body;
+
   bcrypt
-    .hash(req.body.password, 10)
+    .hash(password, 10)
     .then((hashedPassword) => {
-      const user = new User({
-        username: req.body.username,
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        email: req.body.email,
+      const newUser = new User({
+        username,
+        firstName,
+        lastName,
+        email,
         password: hashedPassword,
       });
+      console.log(newUser);
 
-      user
+      newUser
         .save()
         .then((result) => {
           res.status(201).send({
-            message: "User created successfully",
+            message: "User registered successfully",
             result,
           });
         })
         .catch((err) => {
           res.status(500).send({
-            message: "Errpr creating user",
+            message: "Error creating user",
             err,
           });
         });
     })
     .catch((error) => {
       res.status(500).send({
-        message: "Password was not hashed successfully",
+        message: "Password was not hashed",
         error,
       });
     });
